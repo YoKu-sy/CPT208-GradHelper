@@ -22,3 +22,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+# --- Python RAG Backend ---
+.venv/
+__pycache__/
+*.py[cod]
+.env
+*.db
+data/
+tmp_*
+web_validation_sample.txt
