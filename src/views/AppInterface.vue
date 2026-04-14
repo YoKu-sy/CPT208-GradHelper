@@ -30,12 +30,14 @@
       <h2 class="text-2xl font-bold mb-8 tracking-tight">Explore More Modules</h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         
-        <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer">
-          <div class="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center mb-6 text-blue-600 font-bold">Aa</div>
-          <h3 class="text-xl font-bold mb-3">IELTS Preparation</h3>
-          <p class="text-gray-500 text-sm leading-relaxed">
-            Targeted guidance for Academic Writing Task 1 & 2. Master data analysis and high-scoring vocabulary.
-          </p>
+        <div @click="$router.push('/gpa')" class="group bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:shadow-[0_0_25px_rgba(59,130,246,0.25)] hover:-translate-y-1 transition-all duration-500 cursor-pointer">
+          <div class="w-12 h-12 bg-blue-50 group-hover:bg-blue-100 transition-colors duration-500 rounded-full flex items-center justify-center mb-6 text-blue-600 font-bold">
+          100
+        </div>
+        <h3 class="text-xl font-bold mb-3">GPA Conversion</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">
+          Enter your current percentage score and we will instantly convert it to the standard GPA, providing you with precise data for your college application.
+        </p>
         </div>
 
         <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer">
@@ -46,11 +48,11 @@
           </p>
         </div>
 
-        <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer">
-          <div class="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center mb-6 text-green-600 font-bold">🏛</div>
-          <h3 class="text-xl font-bold mb-3">RAG Knowledge Base</h3>
+        <div @click="$router.push('/knowledge')" class="group bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:shadow-[0_0_25px_rgba(34,197,94,0.2)] hover:-translate-y-1 transition-all duration-500 cursor-pointer">
+          <div class="w-12 h-12 bg-green-50 group-hover:bg-green-100 transition-colors duration-500 rounded-full flex items-center justify-center mb-6 text-green-600 font-bold">🏛</div>
+          <h3 class="text-xl font-bold mb-3">University Database</h3>
           <p class="text-gray-500 text-sm leading-relaxed">
-            Explore our global university database to check minimum GPA requirements, prerequisites, and deadlines.
+            Explore regional requirements, GPA thresholds, and prerequisite courses for global top institutions.
           </p>
         </div>
 

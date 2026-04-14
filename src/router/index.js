@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Intro from '../views/Intro.vue'
 import AppInterface from '../views/AppInterface.vue'
 import AIChat from '../views/AIChat.vue'
+import GpaCalculator from '../views/GpaCalculator.vue'
 
 const routes = [
   {
@@ -23,7 +24,19 @@ const routes = [
     name: 'AIChat',
     component: AIChat,
     meta: { title: 'AI Assistant Workbench' }
-  }
+  },
+  {
+    path: '/gpa',
+    name: 'GpaCalculator',
+    component: GpaCalculator,
+    meta: { title: 'GPA 换算' }
+  },
+  {
+  path: '/knowledge',
+  name: 'KnowledgeBase',
+  component: () => import('../views/KnowledgeBase.vue'), // 建议使用懒加载
+  meta: { title: 'University Database' }
+}
 ]
 
 const router = createRouter({
