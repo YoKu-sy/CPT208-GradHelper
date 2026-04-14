@@ -36,7 +36,16 @@ const routes = [
   name: 'KnowledgeBase',
   component: () => import('../views/KnowledgeBase.vue'), // 建议使用懒加载
   meta: { title: 'University Database' }
-}
+  },
+  // 在你的路由配置数组中添加
+  {
+  // :type 用于区分是 'case' 还是 'university'
+  // :id 是数据库中的唯一标识符
+  path: '/detail/:type/:id',
+  name: 'DetailView',
+  component: () => import('../views/DetailView.vue'), // 建议新建这个文件
+  props: true // 允许将路由参数作为 props 传给组件
+  }
 ]
 
 const router = createRouter({
