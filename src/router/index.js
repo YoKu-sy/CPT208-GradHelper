@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Intro from '../views/Intro.vue'
 import AppInterface from '../views/AppInterface.vue'
+import AIChat from '../views/AIChat.vue'
 
 const routes = [
   {
@@ -15,6 +16,13 @@ const routes = [
     name: 'AppInterface',
     component: AppInterface,
     meta: { title: 'AI 升学助手' }
+  },
+  {
+    // <--- 新增这段配置
+    path: '/chat',
+    name: 'AIChat',
+    component: AIChat,
+    meta: { title: 'AI Assistant Workbench' }
   }
 ]
 
