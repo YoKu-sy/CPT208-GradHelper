@@ -4,7 +4,7 @@
       <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
       </svg>
-      返回
+      Back
     </button>
 
     <div v-if="loading" class="flex justify-center items-center h-64">
@@ -25,7 +25,7 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div class="space-y-6">
           <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100">
-            <h3 class="text-sm font-bold text-gray-400 uppercase mb-4">关键指标 / Requirements</h3>
+            <h3 class="text-sm font-bold text-gray-400 uppercase mb-4">Requirements</h3>
             <div class="space-y-4">
               <div v-for="(val, key) in detailData.stats" :key="key">
                 <p class="text-xs text-gray-500">{{ key }}</p>
@@ -39,7 +39,7 @@
           <section>
             <h3 class="text-xl font-bold mb-4 flex items-center">
               <span class="w-1 h-6 bg-blue-500 rounded-full mr-3"></span>
-              详细介绍 / Description
+              Description
             </h3>
             <div class="text-gray-600 leading-relaxed space-y-4 whitespace-pre-line">
               {{ detailData.description }}
@@ -49,7 +49,7 @@
           <section v-if="detailData.highlights && detailData.highlights.length">
             <h3 class="text-xl font-bold mb-4 flex items-center">
               <span class="w-1 h-6 bg-green-500 rounded-full mr-3"></span>
-              核心亮点 / Highlights
+              Highlights
             </h3>
             <ul class="grid grid-cols-1 gap-3">
               <li v-for="item in detailData.highlights" :key="item" class="flex items-start bg-zinc-50 p-4 rounded-xl">
