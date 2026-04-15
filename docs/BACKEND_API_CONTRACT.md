@@ -1,42 +1,32 @@
-# GradHelper Web 后端接口对接文档
+# GradHelper Web Backend API Contract
 
-本文档基于当前前端代码（`AIChat`、`DetailView`、`KnowledgeBase`）整理，目标是让后端同学按本文即可完成可联调接口。
+This document lists all backend endpoints required by the current frontend codebase (`AIChat`, `DetailView`, `KnowledgeBase`).
 
-## 1. 基础约定
+## 1. Base Rules
 
-- 前端默认后端地址：
-  - `AIChat`、`DetailView`：`VITE_API_BASE_URL`（未配置时回退 `http://localhost:8080`）
-  - `KnowledgeBase`：当前代码写死 `http://localhost:8080`
-- 需要开启 CORS（至少允许前端开发域名，例如 `http://localhost:5173`）。
-- 数据编码：`UTF-8`，`Content-Type: application/json`。
+- API base URL:
+  - `AIChat` and `DetailView`: `VITE_API_BASE_URL`, fallback `http://localhost:8080`
+  - `KnowledgeBase`: currently hardcoded to `http://localhost:8080`
+- Enable CORS for frontend origin (for local dev usually `http://localhost:5173`).
+- Response format: `application/json`, UTF-8.
 
-## 2. 接口总览
+## 2. Endpoint Summary
 
 1. `GET /api/cases/latest`
-用途：`AIChat` 左侧申请案例小卡片。
-
 2. `GET /api/universities/featured`
-用途：`AIChat` 右侧学校小卡片。
-
 3. `GET /api/details/{type}/{id}`
-用途：点击 `AIChat` 小卡片后进入 `DetailView` 详情页。  
-`type` 仅允许：`case` / `university`。
-
 4. `GET /api/universities?region={regionId}`
-用途：`KnowledgeBase` 按地区查询学校列表。  
-`regionId` 当前使用：`hk` / `uk` / `usa` / `eu` / `aus`。
-
 5. `POST /api/rag/search`
-用途：`KnowledgeBase` 顶部搜索（RAG 检索）。
+6. `POST /api/chat/init`
+7. `POST /api/chat/send`
 
-## 3. 详细契约
+## 3. Endpoint Details
 
 ### 3.1 `GET /api/cases/latest`
 
-请求：
-- Query 参数：无（可选支持 `limit`，前端当前未传）
+Used by: AIChat left sidebar cards.
 
-前端当前严格期望返回：`Array`（不是对象包裹）
+Expected response by frontend: raw `Array` (not wrapped).
 
 ```json
 [
@@ -51,7 +41,7 @@
 ]
 ```
 
-可兼容字段（前端已做映射容错）：
+Compatible aliases in frontend mapping:
 - `offer | offerSchool | schoolAbbr`
 - `major | program`
 - `gpa | GPA`
@@ -60,10 +50,9 @@
 
 ### 3.2 `GET /api/universities/featured`
 
-请求：
-- Query 参数：无
+Used by: AIChat right sidebar cards.
 
-前端当前严格期望返回：`Array`
+Expected response by frontend: raw `Array` (not wrapped).
 
 ```json
 [
@@ -76,20 +65,20 @@
 ]
 ```
 
-可兼容字段（前端已做映射容错）：
+Compatible aliases in frontend mapping:
 - `abbr | shortName | code`
 - `name | universityName`
 - `country | location`
 
 ### 3.3 `GET /api/details/{type}/{id}`
 
-请求路径参数：
-- `type`: `case` 或 `university`
-- `id`: 卡片主键（字符串或数字都可）
+Used by: detail page after clicking AIChat cards.
 
-前端当前严格期望返回：`Object`（不是 `{ data: ... }`）
+Path params:
+- `type`: `case` or `university`
+- `id`: card id
 
-推荐返回结构（两种 type 共用）：
+Expected response by frontend: raw `Object` (not wrapped).
 
 ```json
 {
@@ -102,21 +91,24 @@
     "GPA": "3.8/4.0",
     "IELTS": "7.0"
   },
-  "highlights": ["科研背景强", "有相关实习"]
+  "highlights": ["Research experience", "Relevant internship"]
 }
 ```
 
-说明：
-- `case` 类型：顶部主标题优先用 `title`（没有时退化到 `name`）。
-- `university` 类型：顶部主标题优先用 `name`（没有时退化到 `title`）。
-- `stats` 必须是对象，`highlights` 必须是字符串数组（可空数组）。
+Notes:
+- For `case`, frontend prefers `title`.
+- For `university`, frontend prefers `name`.
+- `stats` should be an object.
+- `highlights` should be an array of strings.
 
 ### 3.4 `GET /api/universities?region={regionId}`
 
-请求：
-- Query 参数：`region`（`hk/uk/usa/eu/aus`）
+Used by: KnowledgeBase region filtering.
 
-前端当前严格期望返回：对象包裹，且列表在 `data` 字段：
+Query param:
+- `region`: `hk | uk | usa | eu | aus`
+
+Expected response by frontend: wrapped object with `data`.
 
 ```json
 {
@@ -132,15 +124,17 @@
 }
 ```
 
-列表项关键字段：
+List item fields used by frontend:
 - `id`
 - `name`
-- `gpaRequirement`（或 `gpaReq`）
+- `gpaRequirement` (or `gpaReq`)
 - `description`
 
 ### 3.5 `POST /api/rag/search`
 
-请求体：
+Used by: KnowledgeBase top search box.
+
+Request:
 
 ```json
 {
@@ -148,7 +142,7 @@
 }
 ```
 
-前端当前严格期望返回：对象包裹，且列表在 `data` 字段（结构同 3.4）
+Expected response by frontend: same shape as 3.4 (`{ code, data: [] }`).
 
 ```json
 {
@@ -164,14 +158,69 @@
 }
 ```
 
-## 4. 错误码与异常建议
+### 3.6 `POST /api/chat/init`
 
-- `200`：成功
-- `400`：参数错误（例如 `type` 非法、`region` 非法、query 为空）
-- `404`：详情不存在
-- `500`：服务端异常
+Used by: AIChat, after user clicks `Save Profile & Init AI`.
 
-建议错误结构：
+Request:
+
+```json
+{
+  "major": "Computer Science and Technology",
+  "gpa": "3.8/4.0",
+  "keywords": "AI Lab, Robotics"
+}
+```
+
+Expected response by frontend:
+- Frontend reads `result.data.reply`.
+
+```json
+{
+  "code": 200,
+  "data": {
+    "reply": "Great profile. I suggest focusing on CS programs in HK and UK first."
+  }
+}
+```
+
+### 3.7 `POST /api/chat/send`
+
+Used by: AIChat send message.
+
+Request:
+
+```json
+{
+  "message": "Can you compare HKU and UCL for AI?",
+  "history": [
+    { "role": "ai", "content": "..." },
+    { "role": "user", "content": "..." }
+  ]
+}
+```
+
+Expected response by frontend:
+- Frontend reads `result.data.reply`.
+
+```json
+{
+  "code": 200,
+  "data": {
+    "reply": "Here is a quick comparison..."
+  }
+}
+```
+
+## 4. Error Handling Suggestion
+
+Suggested status codes:
+- `200` success
+- `400` invalid request
+- `404` not found
+- `500` server error
+
+Suggested error body:
 
 ```json
 {
@@ -180,21 +229,19 @@
 }
 ```
 
-## 5. 当前联调注意事项（非常重要）
+## 5. Important Integration Notes
 
-1. 当前前端的返回格式不完全统一：
-- `AIChat` 两个列表接口要求直接返回数组。
-- `DetailView` 详情接口要求直接返回对象。
-- `KnowledgeBase` 两个接口要求返回 `{ data: [...] }`。
+Current frontend expects mixed response styles:
+- AIChat sidebars: raw arrays
+- DetailView: raw object
+- KnowledgeBase: wrapped object with `data`
+- AIChat chat APIs: wrapped object with `data.reply`
 
-2. 如果后端想统一成同一种包裹格式（例如都用 `{ code, data }`），需要前端同步改解析逻辑，否则会触发 mock 回退或无数据。
+If backend wants fully unified response style, frontend parsing must be updated in the corresponding views.
 
-3. `DetailView` 的 `type` 由路由透传，后端必须支持：
-- `/api/details/case/{id}`
-- `/api/details/university/{id}`
+## 6. Recommended Delivery Order
 
-## 6. 最小可用实现顺序（建议）
-
-1. 先完成 `GET /api/cases/latest` + `GET /api/universities/featured`（AIChat 首屏可真数据）。
-2. 再完成 `GET /api/details/{type}/{id}`（卡片点进详情页可真数据）。
-3. 最后完成 `KnowledgeBase` 的地区查询与搜索接口。
+1. `GET /api/cases/latest` + `GET /api/universities/featured`
+2. `GET /api/details/{type}/{id}`
+3. `POST /api/chat/init` + `POST /api/chat/send`
+4. `GET /api/universities?region=...` + `POST /api/rag/search`
