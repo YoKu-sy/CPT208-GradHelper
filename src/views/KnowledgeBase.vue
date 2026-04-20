@@ -11,6 +11,8 @@ import usaFlag from '../assets/flags/usa.png'
 import euFlag from '../assets/flags/eu.png'
 import ausFlag from '../assets/flags/aus.png'
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'
+
 const searchQuery = ref('')
 const selectedRegion = ref(null)
 const isLoading = ref(false)
@@ -38,9 +40,9 @@ const handleRegionClick = async (regionId, regionName) => {
   universityList.value = [] // 切换地区时清空旧数据
   
   try {
-    // 【对接修改点1】将这里的 URL 换成后端同学提供的真实服务器地址
+        // 【对接修改点1】将这里的 URL 换成后端同学提供的真实服务器地址
     // 假设传给后端的参数名叫 region
-    const response = await fetch(`http://localhost:8080/api/universities?region=${regionId}`)
+    const response = await fetch(`${API_BASE}/api/universities?region=${regionId}`)
     
     if (!response.ok) throw new Error('Network response was not ok')
     
@@ -53,8 +55,11 @@ const handleRegionClick = async (regionId, regionName) => {
     
   } catch (error) {
     console.error("Failed to fetch region data:", error)
-    // 这里可以加一个简单的 mock 数据用于前端断网时的界面测试
-    // universityList.value = [{ id: 1, name: "Test University", gpaRequirement: "3.5", description: "Mock data for testing." }]
+    // 启用了简单的 mock 数据，用于前端断网/未接通时的界面测试
+    universityList.value = [
+      { id: 1, name: `${regionName} University of Tech`, gpaRequirement: "3.5", description: `Mock program info for ${regionName}. Waiting for real backend integration.` },
+      { id: 2, name: `${regionName} National College`, gpaRequirement: "3.2", description: "Sample detailed requirements will be populated from DB." }
+    ]
   } finally {
     isLoading.value = false
   }
@@ -75,9 +80,9 @@ const handleSearch = async () => {
   selectedRegion.value = null // 搜索时清除下方的地区高亮
   universityList.value = []
   
-  try {
+    try {
     // 【对接修改点3】将这里的 URL 换成后端的 RAG 搜索接口地址
-    const response = await fetch('http://localhost:8080/api/rag/search', {
+    const response = await fetch(`${API_BASE}/api/rag/search`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json' // 告诉后端我们传的是 JSON
@@ -95,6 +100,10 @@ const handleSearch = async () => {
     
   } catch (error) {
     console.error("Search failed:", error)
+    // 启用了搜索功能的 mock 数据
+    universityList.value = [
+      { id: 101, name: "Search Result University", gpaRequirement: "3.8", description: `This is a simulated RAG search result for "${searchQuery.value}". Backend is not connected yet.` }
+    ]
   } finally {
     isLoading.value = false
   }
