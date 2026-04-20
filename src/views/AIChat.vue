@@ -97,55 +97,74 @@
           </button>
         </div>
 
-        <div v-if="isProfileSaved" class="w-full max-w-2xl space-y-6 pb-10">
-          <div
-            v-for="(msg, index) in chatMessages"
-            :key="index"
-            :class="['flex', msg.role === 'user' ? 'justify-end' : 'justify-start']"
-          >
-            <div v-if="msg.role === 'ai'" class="flex items-start max-w-[85%]">
-              <div class="w-8 h-8 rounded-full bg-blue-600 flex-shrink-0 flex items-center justify-center text-white font-bold text-xs shadow-sm">AI</div>
-              <div class="ml-4 neo-card rounded-2xl rounded-tl-none px-5 py-4 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">
-                {{ msg.content }}
-                <span v-if="msg.typing" class="inline-block w-2 h-4 ml-1 align-middle bg-gray-500 animate-pulse"></span>
-              </div>
+        <div v-if="isProfileSaved" class="w-full max-w-4xl pb-10">
+          <div class="mb-5 flex items-center justify-between">
+            <div>
+              <h2 class="text-2xl font-bold text-black">Matched Offers</h2>
+              <p class="text-sm text-gray-500">Randomized top results within the GPA threshold.</p>
             </div>
-
-            <div v-else class="flex items-start max-w-[85%] flex-row-reverse">
-              <div class="w-8 h-8 rounded-full bg-black flex-shrink-0 flex items-center justify-center text-white font-bold text-xs shadow-sm">U</div>
-              <div class="mr-4 bg-blue-50 text-blue-900 border border-blue-100 rounded-2xl rounded-tr-none px-5 py-4 text-sm whitespace-pre-wrap leading-relaxed neo-soft">
-                {{ msg.content }}
-              </div>
-            </div>
+            <span class="rounded-full bg-black px-4 py-2 text-xs font-semibold tracking-[0.2em] text-white">
+              {{ searchResults.length }} RESULTS
+            </span>
           </div>
 
-          <div v-if="isSendingMsg" class="flex items-start max-w-[85%]">
-            <div class="w-8 h-8 rounded-full bg-blue-600 flex-shrink-0 flex items-center justify-center text-white font-bold text-xs">AI</div>
-            <div class="ml-4 neo-card rounded-2xl rounded-tl-none px-5 py-4 text-sm text-gray-500 animate-pulse">
-              AI is typing...
-            </div>
+          <div v-if="searchResults.length === 0" class="rounded-[2rem] border border-white/70 bg-white/50 p-6 backdrop-blur-xl shadow-[0_18px_60px_rgba(255,255,255,0.4)]">
+            <p class="text-sm text-gray-600">No similar profiles were found yet. Try another major or GPA.</p>
+          </div>
+
+          <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+            <article
+              v-for="(item, index) in searchResults"
+              :key="`${item.offer}-${index}`"
+              class="rounded-[1.8rem] border border-white/60 bg-white/45 p-5 shadow-[0_16px_50px_rgba(15,23,42,0.08)] backdrop-blur-xl transition hover:-translate-y-1 hover:shadow-[0_20px_70px_rgba(15,23,42,0.12)]"
+            >
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <p class="text-xs uppercase tracking-[0.2em] text-sky-500 font-semibold">Major</p>
+                  <h3 class="mt-2 text-lg font-bold text-slate-900">{{ item.major || 'N/A' }}</h3>
+                </div>
+                <span class="rounded-full bg-slate-950 px-3 py-1 text-xs font-semibold text-white">
+                  {{ item.status || 'pending' }}
+                </span>
+              </div>
+
+              <div class="mt-4 rounded-2xl bg-slate-50/80 p-3">
+                <p class="text-xs text-slate-400">Offer</p>
+                <p class="mt-1 text-sm font-semibold text-slate-800">{{ item.offer || 'N/A' }}</p>
+              </div>
+
+              <div class="mt-5 grid grid-cols-2 gap-3 text-sm">
+                <div class="rounded-2xl bg-slate-50/80 p-3">
+                  <p class="text-xs text-slate-400">GPA</p>
+                  <p class="mt-1 font-semibold text-slate-800">{{ item.gpa || '-' }}</p>
+                </div>
+                <div class="rounded-2xl bg-slate-50/80 p-3">
+                  <p class="text-xs text-slate-400">Research</p>
+                  <p class="mt-1 font-semibold text-slate-800">{{ item.research ?? 0 }}</p>
+                </div>
+                <div class="rounded-2xl bg-slate-50/80 p-3">
+                  <p class="text-xs text-slate-400">Internship</p>
+                  <p class="mt-1 font-semibold text-slate-800">{{ item.internship ?? 0 }}</p>
+                </div>
+                <div class="rounded-2xl bg-slate-50/80 p-3 md:col-span-2">
+                  <p class="text-xs text-slate-400">Additional Notes</p>
+                  <p class="mt-1 text-sm leading-6 text-slate-700">{{ item.additional_notes || '—' }}</p>
+                </div>
+              </div>
+            </article>
           </div>
         </div>
       </div>
 
       <div class="p-6 bg-white/85 border-t border-gray-100">
-        <div class="max-w-3xl mx-auto relative flex items-center">
-          <input
-            v-model="userInput"
-            @keyup.enter="sendMessage"
-            :disabled="!isProfileSaved || isSendingMsg"
-            type="text"
-            placeholder="Ask about specific university policies..."
-            class="w-full bg-gray-100 px-6 py-4 rounded-full outline-none pr-16 focus:ring-2 focus:ring-blue-500 neo-soft disabled:opacity-50 disabled:cursor-not-allowed"
-          />
+        <div class="max-w-3xl mx-auto flex items-center justify-center">
           <button
-            @click="sendMessage"
-            :disabled="!isProfileSaved || isSendingMsg"
-            class="absolute right-2 w-10 h-10 bg-black text-white rounded-full flex items-center justify-center hover:scale-105 neo-medium disabled:opacity-50 disabled:hover:scale-100"
+            @click="saveProfileAndInitAI"
+            :disabled="isSaving"
+            class="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white bg-black rounded-full overflow-hidden neo-medium hover:scale-105 hover:shadow-[0_10px_40px_rgba(0,0,0,0.3)] disabled:opacity-50 disabled:hover:scale-100"
           >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-            </svg>
+            <span v-if="!isSaving">Save Profile & Search</span>
+            <span v-else>Searching...</span>
           </button>
         </div>
       </div>
@@ -172,12 +191,12 @@
 </template>
 
 <script setup>
-import { nextTick, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'
-const TYPE_SPEED_MS = 18
+const API_BASE = import.meta.env.VITE_API_BASE_URL || '/ai-assistant-api'
+const RESULT_LIMIT = 50
 
 const TAG_CLASSES = ['bg-green-100 text-green-700', 'bg-blue-100 text-blue-700', 'bg-amber-100 text-amber-700']
 const UNI_BG_CLASSES = ['bg-black', 'bg-red-600', 'bg-blue-600']
@@ -185,7 +204,6 @@ const UNI_POSITION_CLASSES = ['transform -translate-x-2', 'ml-auto transform tra
 
 const successStories = ref([])
 const targetUniversities = ref([])
-const chatScrollEl = ref(null)
 
 const satMajors = [
   { en: 'Electrical Engineering and Automation', zh: '电气工程及其自动化' },
@@ -201,7 +219,7 @@ const satMajors = [
 const userProfile = ref({ major: '', gpa: '', keywords: '' })
 const isSaving = ref(false)
 const isProfileSaved = ref(false)
-const chatMessages = ref([])
+const searchResults = ref([])
 const userInput = ref('')
 const isSendingMsg = ref(false)
 
@@ -216,90 +234,33 @@ const UNIVERSITY_MOCK_DATA = [
   { id: 3, abbr: 'ICL', name: 'Imperial College', country: 'UK' }
 ]
 
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
-
-const scrollToBottom = async () => {
-  await nextTick()
-  if (chatScrollEl.value) {
-    chatScrollEl.value.scrollTop = chatScrollEl.value.scrollHeight
-  }
-}
-
-const appendAiMessageWithTyping = async (fullText) => {
-  const msg = { role: 'ai', content: '', typing: true }
-  chatMessages.value.push(msg)
-  await scrollToBottom()
-
-  for (const ch of String(fullText || '')) {
-    msg.content += ch
-    await sleep(TYPE_SPEED_MS)
-    await scrollToBottom()
-  }
-
-  msg.typing = false
-}
-
 const saveProfileAndInitAI = async () => {
   if (!userProfile.value.major) return
   isSaving.value = true
 
-  let reply = `Profile saved! Based on your ${userProfile.value.gpa || 'current'} GPA, I recommend focusing on top schools in HK and UK. How can I help you?`
-
   try {
-    const res = await fetch(`${API_BASE}/api/chat/init`, {
+    const res = await fetch(`${API_BASE}/profile/search`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(userProfile.value)
+      body: JSON.stringify({
+        major: userProfile.value.major,
+        gpa: userProfile.value.gpa,
+        additional_info: userProfile.value.keywords
+      })
     })
-    if (!res.ok) throw new Error('Init failed')
+
+    if (!res.ok) throw new Error('Search failed')
 
     const result = await res.json()
-    reply = result?.data?.reply || reply
+    searchResults.value = Array.isArray(result?.results) ? result.results.slice(0, RESULT_LIMIT) : []
   } catch (error) {
-    console.warn('Backend not ready, using fallback', error)
+    console.warn('Backend not ready, using empty results', error)
+    searchResults.value = []
   } finally {
     isProfileSaved.value = true
     isSaving.value = false
     localStorage.setItem('grad_user_profile', JSON.stringify(userProfile.value))
   }
-
-  await appendAiMessageWithTyping(reply)
-  await scrollToBottom()
-}
-
-const sendMessage = async () => {
-  const text = userInput.value.trim()
-  if (!text || !isProfileSaved.value || isSendingMsg.value) return
-
-  chatMessages.value.push({ role: 'user', content: text, typing: false })
-  userInput.value = ''
-  isSendingMsg.value = true
-  await scrollToBottom()
-
-  let reply = 'Backend error: Could not reach the AI brain.'
-
-  try {
-    const history = chatMessages.value.slice(0, -1).map((item) => ({
-      role: item.role,
-      content: item.content
-    }))
-
-    const res = await fetch(`${API_BASE}/api/chat/send`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: text, history })
-    })
-    if (!res.ok) throw new Error('Chat API failed')
-
-    const result = await res.json()
-    reply = result?.data?.reply || 'No response.'
-  } catch (error) {
-    console.warn('Chat API error', error)
-  }
-
-  await appendAiMessageWithTyping(reply)
-  isSendingMsg.value = false
-  await scrollToBottom()
 }
 
 const normalizeStory = (story, index) => ({
@@ -321,31 +282,12 @@ const normalizeUniversity = (uni, index) => ({
   positionClass: UNI_POSITION_CLASSES[index % UNI_POSITION_CLASSES.length]
 })
 
-const fetchSidebarData = async () => {
-  let stories = STORY_MOCK_DATA
-  let universities = UNIVERSITY_MOCK_DATA
-
-  try {
-    const [storiesRes, unisRes] = await Promise.allSettled([
-      fetch(`${API_BASE}/api/cases/latest`).then((r) => (r.ok ? r.json() : Promise.reject())),
-      fetch(`${API_BASE}/api/universities/featured`).then((r) => (r.ok ? r.json() : Promise.reject()))
-    ])
-
-    if (storiesRes.status === 'fulfilled' && Array.isArray(storiesRes.value) && storiesRes.value.length > 0) {
-      stories = storiesRes.value
-    }
-    if (unisRes.status === 'fulfilled' && Array.isArray(unisRes.value) && unisRes.value.length > 0) {
-      universities = unisRes.value
-    }
-  } catch (e) {
-    console.warn('API connection failed, using mock sidebars')
-  }
-
-  successStories.value = stories.map(normalizeStory)
-  targetUniversities.value = universities.map(normalizeUniversity)
+const initSidebarData = () => {
+  successStories.value = STORY_MOCK_DATA.map(normalizeStory)
+  targetUniversities.value = UNIVERSITY_MOCK_DATA.map(normalizeUniversity)
 }
 
 const goToDetail = (type, id) => router.push(`/detail/${type}/${id}`)
 
-onMounted(fetchSidebarData)
+onMounted(initSidebarData)
 </script>

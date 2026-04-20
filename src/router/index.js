@@ -3,6 +3,7 @@ import Intro from '../views/Intro.vue'
 import AppInterface from '../views/AppInterface.vue'
 import AIChat from '../views/AIChat.vue'
 import GpaCalculator from '../views/GpaCalculator.vue'
+import IeltsAssistant from '../views/IeltsAssistant.vue'
 
 const routes = [
   {
@@ -17,6 +18,12 @@ const routes = [
     name: 'AppInterface',
     component: AppInterface,
     meta: { title: 'AI 升学助手' }
+  },
+  {
+    path: '/ielts',
+    name: 'IeltsAssistant',
+    component: IeltsAssistant,
+    meta: { title: '雅思备考小助手' }
   },
   {
     // <--- 新增这段配置

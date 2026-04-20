@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+backend/IELTS/.env
+backend/IELTS/.venv/
+backend/AI_assistant/.venv/

@@ -1,0 +1,14 @@
+[project]
+name = "ragflow-backend"
+version = "0.1.0"
+description = "FastAPI backend for RAGFlow chat assistant"
+requires-python = ">=3.10"
+dependencies = [
+  "fastapi==0.115.0",
+  "uvicorn[standard]==0.30.6",
+  "python-dotenv==1.0.1",
+  "requests==2.32.3",
+]
+
+[tool.uv]
+# uv will use this project file to manage dependencies and environments.

@@ -7,7 +7,7 @@
       <div class="text-xl font-bold tracking-tight">GradHelper Hub</div>
       <div class="space-x-6 text-sm font-medium text-gray-500 hidden md:block">
         <a href="#features" class="hover:text-black neo-soft">Features</a>
-        <a href="#" class="hover:text-black neo-soft">My Profile</a>
+        <a href="#chat-modules" class="hover:text-black neo-soft">Chat Modules</a>
         <a
           href="https://github.com/YoKu-sy/CPT208-GradHelper.git"
           target="_blank"
@@ -28,16 +28,54 @@
         Input your background and goals. Let our RAG-enhanced AI map out your perfect postgraduate application strategy instantly.
       </p>
 
-      <button
-        @click="goToAI"
-        class="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white bg-black rounded-full overflow-hidden neo-medium hover:scale-105 hover:shadow-[0_10px_40px_rgba(0,0,0,0.3)]"
-      >
-        <span>Launch AI Assistant</span>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 group-hover:translate-x-1 neo-soft" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-        </svg>
-      </button>
+      <div class="flex flex-col sm:flex-row gap-4">
+        <button
+          @click="goToAI"
+          class="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white bg-black rounded-full overflow-hidden neo-medium hover:scale-105 hover:shadow-[0_10px_40px_rgba(0,0,0,0.3)]"
+        >
+          <span>Launch AI Assistant</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 group-hover:translate-x-1 neo-soft" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </button>
+
+        <button
+          @click="goToIelts"
+          class="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white bg-sky-600 rounded-full overflow-hidden neo-medium hover:scale-105 hover:shadow-[0_10px_40px_rgba(14,165,233,0.35)]"
+        >
+          <span>Launch IELTS Assistant</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 group-hover:translate-x-1 neo-soft" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </button>
+      </div>
     </main>
+
+    <section id="chat-modules" class="max-w-6xl mx-auto px-6 py-12 relative z-10">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div @click="goToAI" class="neo-card neo-strong group p-8 rounded-3xl cursor-pointer">
+          <div class="w-12 h-12 bg-blue-50 group-hover:bg-blue-100 neo-medium rounded-full flex items-center justify-center mb-6 text-blue-600 font-bold">
+            AI
+          </div>
+          <h3 class="text-xl font-bold mb-3">升学助手</h3>
+          <p class="text-gray-500 text-sm leading-relaxed mb-5">
+            点击进入原来的升学问答对话页，继续使用你原本的聊天逻辑。
+          </p>
+          <p class="text-xs uppercase tracking-[0.15em] text-blue-500 font-semibold">Open Chat</p>
+        </div>
+
+        <div @click="goToIelts" class="neo-card neo-strong group p-8 rounded-3xl cursor-pointer">
+          <div class="w-12 h-12 bg-sky-50 group-hover:bg-sky-100 neo-medium rounded-full flex items-center justify-center mb-6 text-sky-600 font-bold">
+            IEL
+          </div>
+          <h3 class="text-xl font-bold mb-3">雅思备考助手</h3>
+          <p class="text-gray-500 text-sm leading-relaxed mb-5">
+            点击进入雅思备考问答页面，和独立的 session 对话流程继续交流。
+          </p>
+          <p class="text-xs uppercase tracking-[0.15em] text-sky-500 font-semibold">Open Chat</p>
+        </div>
+      </div>
+    </section>
 
     <section id="features" class="max-w-6xl mx-auto px-6 py-12 relative z-10">
       <h2 class="text-2xl font-bold mb-8 tracking-tight">Explore More Modules</h2>
@@ -76,9 +114,15 @@
 </template>
 
 <script setup>
+import AIChat from './AIChat.vue'
+import IeltsAssistant from './IeltsAssistant.vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
+const goToIelts = () => {
+  router.push('/ielts')
+}
+
 const goToAI = () => {
   router.push('/chat')
 }
