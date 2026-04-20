@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 // ==========================================
 // 1. 导入旗帜图片
@@ -15,6 +16,8 @@ const searchQuery = ref('')
 const selectedRegion = ref(null)
 const isLoading = ref(false)
 const universityList = ref([]) // 存放后端返回的院校数据
+const router = useRouter()
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'
 
 // 将导入的图片绑定到地区数据中
 const regionsData = [
@@ -40,7 +43,7 @@ const handleRegionClick = async (regionId, regionName) => {
   try {
     // 【对接修改点1】将这里的 URL 换成后端同学提供的真实服务器地址
     // 假设传给后端的参数名叫 region
-    const response = await fetch(`http://localhost:8080/api/universities?region=${regionId}`)
+    const response = await fetch(`${API_BASE}/api/universities?region=${regionId}`)
     
     if (!response.ok) throw new Error('Network response was not ok')
     
@@ -77,7 +80,7 @@ const handleSearch = async () => {
   
   try {
     // 【对接修改点3】将这里的 URL 换成后端的 RAG 搜索接口地址
-    const response = await fetch('http://localhost:8080/api/rag/search', {
+    const response = await fetch(`${API_BASE}/api/rag/search`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json' // 告诉后端我们传的是 JSON
@@ -98,6 +101,10 @@ const handleSearch = async () => {
   } finally {
     isLoading.value = false
   }
+}
+
+const handleUniversitySelect = (universityId) => {
+  router.push(`/detail/university/${universityId}`)
 }
 </script>
 
@@ -153,7 +160,12 @@ const handleSearch = async () => {
         </div>
 
         <div v-else-if="universityList.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div v-for="uni in universityList" :key="uni.id" class="p-8 bg-white rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+          <div
+            v-for="uni in universityList"
+            :key="uni.id"
+            @click="handleUniversitySelect(uni.id)"
+            class="p-8 bg-white rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow cursor-pointer"
+          >
             <h3 class="text-2xl font-bold mb-2">{{ uni.name || 'University Name' }}</h3>
             <div class="inline-block bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-sm font-bold mb-4">
               GPA Req: {{ uni.gpaRequirement || uni.gpaReq || 'N/A' }}
