@@ -19,7 +19,6 @@ const selectedRegion = ref(null)
 const isLoading = ref(false)
 const universityList = ref([]) // 存放后端返回的院校数据
 const router = useRouter()
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'
 
 // 将导入的图片绑定到地区数据中
 const regionsData = [
@@ -57,12 +56,18 @@ const handleRegionClick = async (regionId, regionName) => {
     universityList.value = result.data 
     
   } catch (error) {
-    console.error("Failed to fetch region data:", error)
+
+
+
+
+
+
+        console.error("Failed to fetch region data:", error)
     // 启用了简单的 mock 数据，用于前端断网/未接通时的界面测试
-    universityList.value = [
+    /* universityList.value = [
       { id: 1, name: `${regionName} University of Tech`, gpaRequirement: "3.5", description: `Mock program info for ${regionName}. Waiting for real backend integration.` },
       { id: 2, name: `${regionName} National College`, gpaRequirement: "3.2", description: "Sample detailed requirements will be populated from DB." }
-    ]
+    ] */
   } finally {
     isLoading.value = false
   }
@@ -102,11 +107,16 @@ const handleSearch = async () => {
     universityList.value = result.data
     
   } catch (error) {
-    console.error("Search failed:", error)
+
+
+
+
+
+        console.error("Search failed:", error)
     // 启用了搜索功能的 mock 数据
-    universityList.value = [
+    /* universityList.value = [
       { id: 101, name: "Search Result University", gpaRequirement: "3.8", description: `This is a simulated RAG search result for "${searchQuery.value}". Backend is not connected yet.` }
-    ]
+    ] */
   } finally {
     isLoading.value = false
   }
@@ -201,3 +211,4 @@ const handleUniversitySelect = (universityId) => {
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 </style>
+

@@ -17,13 +17,13 @@ const routes = [
     path: '/app',
     name: 'AppInterface',
     component: AppInterface,
-    meta: { title: 'AI 升学助手' }
+    meta: { title: 'AI College Admission Assistant' }
   },
   {
     path: '/ielts',
     name: 'IeltsAssistant',
     component: IeltsAssistant,
-    meta: { title: '雅思备考小助手' }
+    meta: { title: 'IELTS Preparation Assistant' }
   },
   {
     // <--- 新增这段配置
@@ -36,7 +36,7 @@ const routes = [
     path: '/gpa',
     name: 'GpaCalculator',
     component: GpaCalculator,
-    meta: { title: 'GPA 换算' }
+    meta: { title: 'GPA Conversion' }
   },
   {
   path: '/knowledge',
