@@ -12,16 +12,14 @@ if exist "backend\IELTS\start_backend.bat" (
 
 if exist "backend\AI_assistant\app.py" (
   echo [2/3] Starting AI assistant backend...
-  if not exist "backend\AI_assistant\.venv\Scripts\python.exe" (
-    echo Creating AI assistant virtual environment...
-    py -3 -m venv "backend\AI_assistant\.venv"
-    if errorlevel 1 (
-      echo Failed to create AI assistant virtual environment.
-      pause
-      exit /b 1
-    )
+  if not exist "backend\.venv\Scripts\python.exe" (
+    echo Backend virtual environment not found.
+    echo Expected interpreter: backend\.venv\Scripts\python.exe
+    echo Please create or restore the shared backend virtual environment first.
+    pause
+    exit /b 1
   )
-  start "AI Assistant Backend" cmd /k "cd /d "%~dp0backend\AI_assistant" && ".venv\Scripts\python.exe" -m uvicorn app:app --host 127.0.0.1 --port 8001"
+  start "AI Assistant Backend" cmd /k "cd /d "%~dp0backend\AI_assistant" && "..\.venv\Scripts\python.exe" -m uvicorn app:app --host 127.0.0.1 --port 8001"
 ) else (
   echo AI assistant app.py not found.
 )

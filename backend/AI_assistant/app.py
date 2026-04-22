@@ -2,6 +2,7 @@ import random
 import re
 import sqlite3
 from collections import Counter
+from difflib import get_close_matches
 from pathlib import Path
 from typing import Any
 
@@ -129,17 +130,57 @@ def similarity_score(query_text: str, candidate_text: str) -> int:
     return sum(min(query_counts[token], candidate_counts[token]) for token in query_counts.keys() & candidate_counts.keys())
 
 
+def get_available_majors(conn: sqlite3.Connection) -> list[str]:
+    rows = conn.execute(
+        """
+        SELECT DISTINCT major
+        FROM offers
+        WHERE major IS NOT NULL AND TRIM(major) <> ''
+        ORDER BY major
+        """
+    ).fetchall()
+    return [str(row["major"]) for row in rows]
+
+
+def resolve_major(conn: sqlite3.Connection, major: str) -> str:
+    normalized_input = major.strip().lower()
+    if not normalized_input:
+        return major
+
+    majors = get_available_majors(conn)
+    lower_map = {item.lower(): item for item in majors}
+
+    if normalized_input in lower_map:
+        return lower_map[normalized_input]
+
+    close_matches = get_close_matches(normalized_input, list(lower_map.keys()), n=1, cutoff=0.72)
+    if close_matches:
+        return lower_map[close_matches[0]]
+
+    input_tokens = set(tokenize(major))
+    best_major = major
+    best_score = 0
+    for candidate in majors:
+        score = len(input_tokens & set(tokenize(candidate)))
+        if score > best_score:
+            best_score = score
+            best_major = candidate
+
+    return best_major if best_score > 0 else major
+
+
 def _search_offers(major: str, target_gpa: float, extra: str = "") -> ProfileSearchResponse:
     conn = get_connection()
     try:
+        resolved_major = resolve_major(conn, major)
         rows = conn.execute(
             """
             SELECT major, offer, gpa, status, research, internship, additional_notes
             FROM offers
-            WHERE major = ?
+            WHERE LOWER(major) = LOWER(?)
               AND ABS(CAST(gpa AS REAL) - ?) <= 0.4
             """,
-            (major, target_gpa),
+            (resolved_major, target_gpa),
         ).fetchall()
     finally:
         conn.close()

@@ -27,11 +27,21 @@
       <p class="text-lg text-gray-500 mb-10 max-w-2xl leading-relaxed">
         Explore the modules below for GPA conversion, IELTS support, and university database lookup.
       </p>
+
+      <button
+        @click="$router.push('/search')"
+        class="inline-flex items-center gap-2 rounded-full bg-slate-950 px-6 py-3 text-sm font-semibold text-white transition hover:scale-105 hover:bg-slate-800"
+      >
+        <span>Open Offer Query Test</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
     </main>
 
     <section id="features" class="max-w-6xl mx-auto px-6 py-12 relative z-10">
       <h2 class="text-2xl font-bold mb-8 tracking-tight">Explore More Modules</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
         <div @click="$router.push('/gpa')" class="neo-card neo-strong group p-8 rounded-3xl cursor-pointer">
           <div class="w-12 h-12 bg-blue-50 group-hover:bg-blue-100 neo-medium rounded-full flex items-center justify-center mb-6 text-blue-600 font-bold">
             100
@@ -61,6 +71,17 @@
             Explore regional requirements, GPA thresholds, and prerequisite courses for global top institutions.
           </p>
           <p class="text-xs uppercase tracking-[0.15em] text-emerald-500 font-semibold">RAG Search</p>
+        </div>
+
+        <div @click="$router.push('/search')" class="neo-card neo-strong group p-8 rounded-3xl cursor-pointer">
+          <div class="w-12 h-12 bg-violet-50 group-hover:bg-violet-100 neo-medium rounded-full flex items-center justify-center mb-6 text-violet-600 font-bold">
+            QA
+          </div>
+          <h3 class="text-xl font-bold mb-3">Offer Query Test</h3>
+          <p class="text-gray-500 text-sm leading-relaxed mb-5">
+            Submit major, GPA, and extra profile details to query matching offer cases from the AI assistant backend.
+          </p>
+          <p class="text-xs uppercase tracking-[0.15em] text-violet-500 font-semibold">Profile Search</p>
         </div>
       </div>
     </section>

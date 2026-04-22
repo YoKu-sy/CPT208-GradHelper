@@ -3,7 +3,6 @@ import Intro from '../views/Intro.vue'
 import AppInterface from '../views/AppInterface.vue'
 import GpaCalculator from '../views/GpaCalculator.vue'
 import IeltsAssistant from '../views/IeltsAssistant.vue'
-
 const routes = [
   {
     path: '/',
@@ -40,6 +39,13 @@ const routes = [
     name: 'DetailView',
     component: () => import('../views/DetailView.vue'),
     props: true
+  },
+  {
+    path: '/search',
+    name: 'ProfileSearch',
+    // 修复点：使用 () => import(...) 动态引入组件，避免 ReferenceError
+    component: () => import('../views/testassistant.vue'),
+    meta: { title: 'Offer 查询' }
   }
 ]
 
