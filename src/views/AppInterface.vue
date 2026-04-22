@@ -22,21 +22,11 @@
     <main class="flex flex-col items-center justify-center pt-24 pb-16 px-4 text-center relative z-10">
       <h1 class="text-5xl md:text-6xl font-extrabold tracking-tighter mb-6 text-black">
         Your Exclusive <br>
-        <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">AI Admission Planner</span>
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">GradHelper Planner</span>
       </h1>
       <p class="text-lg text-gray-500 mb-10 max-w-2xl leading-relaxed">
-        Input your background and goals. Let our RAG-enhanced AI map out your perfect postgraduate application strategy instantly.
+        Explore the modules below for GPA conversion, IELTS support, and university database lookup.
       </p>
-
-      <button
-        @click="goToAI"
-        class="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white bg-black rounded-full overflow-hidden neo-medium hover:scale-105 hover:shadow-[0_10px_40px_rgba(0,0,0,0.3)]"
-      >
-        <span>Launch AI Assistant</span>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 group-hover:translate-x-1 neo-soft" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-        </svg>
-      </button>
     </main>
 
     <section id="features" class="max-w-6xl mx-auto px-6 py-12 relative z-10">
@@ -77,12 +67,4 @@
   </div>
 </template>
 
-<script setup>
-import { useRouter } from 'vue-router'
-
-const router = useRouter()
-const goToAI = () => {
-  router.push('/chat')
-}
-</script>
 

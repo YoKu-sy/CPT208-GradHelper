@@ -129,12 +129,7 @@ def similarity_score(query_text: str, candidate_text: str) -> int:
     return sum(min(query_counts[token], candidate_counts[token]) for token in query_counts.keys() & candidate_counts.keys())
 
 
-@app.post("/profile/search", response_model=ProfileSearchResponse)
-def search_profiles(payload: ProfileRequest) -> ProfileSearchResponse:
-    target_gpa = parse_gpa(payload.gpa)
-    major = payload.major.strip()
-    extra = payload.additional_info.strip()
-
+def _search_offers(major: str, target_gpa: float, extra: str = "") -> ProfileSearchResponse:
     conn = get_connection()
     try:
         rows = conn.execute(
@@ -170,6 +165,36 @@ def search_profiles(payload: ProfileRequest) -> ProfileSearchResponse:
     return ProfileSearchResponse(
         results=[OfferItem(**item) for item in top_results],
         count=len(top_results),
+    )
+
+
+@app.post("/profile/search", response_model=ProfileSearchResponse)
+def search_profiles(payload: ProfileRequest) -> ProfileSearchResponse:
+    target_gpa = parse_gpa(payload.gpa)
+    major = payload.major.strip()
+    extra = payload.additional_info.strip()
+    return _search_offers(major, target_gpa, extra)
+
+
+@app.get("/profile/latest", response_model=ProfileSearchResponse)
+def latest_profiles(limit: int = 20) -> ProfileSearchResponse:
+    conn = get_connection()
+    try:
+        rows = conn.execute(
+            """
+            SELECT major, offer, gpa, status, research, internship, additional_notes
+            FROM offers
+            ORDER BY rowid DESC
+            LIMIT ?
+            """,
+            (max(1, min(int(limit), 50)),),
+        ).fetchall()
+    finally:
+        conn.close()
+
+    return ProfileSearchResponse(
+        results=[OfferItem(**dict(row)) for row in rows],
+        count=len(rows),
     )
 
 
