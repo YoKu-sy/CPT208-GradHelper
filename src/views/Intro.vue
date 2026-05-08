@@ -25,8 +25,8 @@
             <div class="w-24 h-24 rounded-full overflow-hidden border-2 border-gray-800 group-hover:border-white transition-all duration-300 mb-4 shadow-lg group-hover:shadow-white/20">
               <img src="/avatar1.jpg" alt="Member" class="w-full h-full object-cover" onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=Tsubasa'" />
             </div>
-            <h3 class="text-lg font-bold text-white">Tsubasa</h3>
-            <p class="text-xs text-gray-500 mb-3 font-mono">ID: 123456</p>
+            <h3 class="text-lg font-bold text-white">Shaoyi.Wang</h3>
+            <p class="text-xs text-gray-500 mb-3 font-mono">ID: 2363099</p>
             <p class="text-sm text-gray-400 text-center leading-snug">
               Frontend UI/UX & <br> API Integration
             </p>
@@ -36,8 +36,8 @@
             <div class="w-24 h-24 rounded-full overflow-hidden border-2 border-gray-800 group-hover:border-white transition-all duration-300 mb-4 shadow-lg group-hover:shadow-white/20">
               <img src="/avatar2.jpg" alt="Member" class="w-full h-full object-cover" onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=Alex'" />
             </div>
-            <h3 class="text-lg font-bold text-white">Member 2</h3>
-            <p class="text-xs text-gray-500 mb-3 font-mono">ID: 1234568</p>
+            <h3 class="text-lg font-bold text-white">Wenhao.Pu</h3>
+            <p class="text-xs text-gray-500 mb-3 font-mono">ID: 2363794</p>
             <p class="text-sm text-gray-400 text-center leading-snug">
               Backend Logic & <br> Database
             </p>
@@ -47,8 +47,8 @@
             <div class="w-24 h-24 rounded-full overflow-hidden border-2 border-gray-800 group-hover:border-white transition-all duration-300 mb-4 shadow-lg group-hover:shadow-white/20">
               <img src="/avatar3.jpg" alt="Member" class="w-full h-full object-cover" onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah'" />
             </div>
-            <h3 class="text-lg font-bold text-white">Member 3</h3>
-            <p class="text-xs text-gray-500 mb-3 font-mono">ID: 1234569</p>
+            <h3 class="text-lg font-bold text-white">Hongrui.Yang</h3>
+            <p class="text-xs text-gray-500 mb-3 font-mono">ID: 2364534</p>
             <p class="text-sm text-gray-400 text-center leading-snug">
               RAG Model & <br> Prompt Engineering
             </p>
@@ -58,8 +58,8 @@
             <div class="w-24 h-24 rounded-full overflow-hidden border-2 border-gray-800 group-hover:border-white transition-all duration-300 mb-4 shadow-lg group-hover:shadow-white/20">
               <img src="/avatar4.jpg" alt="Member" class="w-full h-full object-cover" onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=Mike'" />
             </div>
-            <h3 class="text-lg font-bold text-white">Member 4</h3>
-            <p class="text-xs text-gray-500 mb-3 font-mono">ID: 1234570</p>
+            <h3 class="text-lg font-bold text-white">Wenjie.chen</h3>
+            <p class="text-xs text-gray-500 mb-3 font-mono">ID: 2361777</p>
             <p class="text-sm text-gray-400 text-center leading-snug">
               Data Crawling & <br> Documentation
             </p>
